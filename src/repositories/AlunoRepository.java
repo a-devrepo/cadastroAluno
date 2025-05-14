@@ -21,7 +21,6 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-			System.out.println("\nAluno inserido com sucesso!");
 		} catch (Exception e) {
 			System.out.println("\nErro ao inserir aluno: " + e.getMessage());
 		}
