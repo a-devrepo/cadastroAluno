@@ -50,8 +50,9 @@ public class AlunoController {
 	}
 
 	private void excluirAluno() {
-		// TODO Auto-generated method stub
-
+		System.out.print("Digite o ID do aluno a ser excluído: ");
+		var id = scanner.nextLine();
+		alunoRepository.excluir(UUID.fromString(id));
 	}
 
 	private void listarAlunos() {
@@ -65,7 +66,7 @@ public class AlunoController {
 	}
 
 	private void cadastrarAluno() {
-		
+
 		var aluno = new Aluno();
 		System.out.print("Digite o nome do aluno: ");
 		aluno.setNome(scanner.nextLine());
