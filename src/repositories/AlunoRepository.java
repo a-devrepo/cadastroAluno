@@ -85,7 +85,7 @@ public class AlunoRepository {
 	public void consultarPorId(UUID id) {
 		try {
 			var connection = connectionFactory.obterConexao();
-			var statement = connection.prepareStatement("select nome, matricula, cpf from aluno where id_aluno=?");
+			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno where id_aluno=?");
 			statement.setObject(1, id);
 			var resultSet = statement.executeQuery();
 
@@ -99,7 +99,7 @@ public class AlunoRepository {
 			}
 
 			connection.close();
-			System.out.println("\nConsulta realizada com sucesso!");
+
 		} catch (Exception e) {
 			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
 		}
