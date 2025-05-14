@@ -13,7 +13,7 @@ public class AlunoRepository {
 		try {
 			var connection = connectionFactory.obterConexao();
 			var statement = connection
-					.prepareStatement("insert into aluno (id, nome, matricula, cpf) values(?,?,?,?)");
+					.prepareStatement("insert into aluno (id_aluno, nome, matricula, cpf) values(?,?,?,?)");
 			statement.setObject(1, aluno.getId());
 			statement.setString(2, aluno.getNome());
 			statement.setString(3, aluno.getMatricula());
@@ -31,7 +31,7 @@ public class AlunoRepository {
 		try {
 
 			var connection = connectionFactory.obterConexao();
-			var statement = connection.prepareStatement("update aluno set nome=?, matricula=?, cpf=? where id=?");
+			var statement = connection.prepareStatement("update aluno set nome=?, matricula=?, cpf=? where id_aluno=?");
 
 			statement.setString(1, aluno.getNome());
 			statement.setString(2, aluno.getMatricula());
@@ -49,7 +49,7 @@ public class AlunoRepository {
 	public void excluir(UUID id) {
 		try {
 			var connection = connectionFactory.obterConexao();
-			var statement = connection.prepareStatement("delete from aluno where id=?");
+			var statement = connection.prepareStatement("delete from aluno where id_aluno=?");
 
 			statement.setObject(1, id);
 			statement.execute();
@@ -64,12 +64,12 @@ public class AlunoRepository {
 	public void consultar() {
 		try {
 			var connection = connectionFactory.obterConexao();
-			var statement = connection.prepareStatement("select id, nome, matricula, cpf from aluno");
+			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
 			var resultSet = statement.executeQuery();
 			
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					System.out.println("\nID.............: " + resultSet.getObject("id"));
+					System.out.println("\nID.............: " + resultSet.getObject("id_aluno"));
 					System.out.println("NOME...........: " + resultSet.getString("nome"));
 					System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
 					System.out.println("CPF.....: " + resultSet.getString("cpf"));
