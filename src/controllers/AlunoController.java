@@ -55,7 +55,7 @@ public class AlunoController {
 	}
 
 	private void listarAlunos() {
-		// TODO Auto-generated method stub
+		alunoRepository.consultar();
 
 	}
 
