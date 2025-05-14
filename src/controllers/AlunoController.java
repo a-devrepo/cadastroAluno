@@ -9,23 +9,72 @@ import repositories.AlunoRepository;
 public class AlunoController {
 
 	AlunoRepository alunoRepository = new AlunoRepository();
-	
-	public void cadastrarAluno() {
-		Scanner scanner = new Scanner(System.in);
+	Scanner scanner = new Scanner(System.in);
+
+	public void exibirOpcoes() {
+		var executando = true;
+
+		while (executando) {
+
+			System.out.println("\n=== MENU PRINCIPAL ===");
+			System.out.println("1. INSERIR");
+			System.out.println("2. ALTERAR");
+			System.out.println("3. LISTAR");
+			System.out.println("4. EXCLUIR");
+			System.out.println("5. SAIR");
+			System.out.print("Escolha uma opção (1-5): ");
+
+			var opcao = scanner.nextLine();
+
+			switch (opcao) {
+			case "1":
+				cadastrarAluno();
+				break;
+			case "2":
+				alterarAluno();
+				break;
+			case "3":
+				listarAlunos();
+				break;
+			case "4":
+				excluirAluno();
+				break;
+			case "5":
+				System.out.println("Saindo do programa...");
+				executando = false;
+				break;
+			default:
+				System.out.println("Opção inválida! Tente novamente.");
+			}
+		}
+	}
+
+	private void excluirAluno() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void listarAlunos() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void alterarAluno() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void cadastrarAluno() {
 		
-		System.out.println("\n****************CADASTRO DE ALUNOS****************");
-		
-		System.out.print("Nome: ");
-		String nome = scanner.nextLine();
-		
-		System.out.print("Matricula: ");
-		String matricula = scanner.nextLine();
-		
-		System.out.print("CPF: ");
-		String cpf = scanner.nextLine();
-		
-		var aluno = new Aluno(UUID.randomUUID(), nome, matricula, cpf);
+		var aluno = new Aluno();
+		System.out.print("Digite o nome do aluno: ");
+		aluno.setNome(scanner.nextLine());
+		System.out.print("Digite a matrícula do aluno: ");
+		aluno.setMatricula(scanner.nextLine());
+		System.out.print("Digite o CPF do aluno: ");
+		aluno.setCpf(scanner.nextLine());
+		aluno.setId(UUID.randomUUID());
 		alunoRepository.inserir(aluno);
-		
+		System.out.println("\nAluno inserido com sucesso!");
 	}
 }
