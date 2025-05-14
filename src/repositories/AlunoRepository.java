@@ -65,7 +65,30 @@ public class AlunoRepository {
 			var connection = connectionFactory.obterConexao();
 			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
 			var resultSet = statement.executeQuery();
-			
+
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					System.out.println("\nID.............: " + resultSet.getObject("id_aluno"));
+					System.out.println("NOME...........: " + resultSet.getString("nome"));
+					System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
+					System.out.println("CPF.....: " + resultSet.getString("cpf"));
+				}
+			}
+
+			connection.close();
+			System.out.println("\nConsulta realizada com sucesso!");
+		} catch (Exception e) {
+			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
+		}
+	}
+
+	public void consultarPorId(UUID id) {
+		try {
+			var connection = connectionFactory.obterConexao();
+			var statement = connection.prepareStatement("select nome, matricula, cpf from aluno where id_aluno=?");
+			statement.setObject(1, id);
+			var resultSet = statement.executeQuery();
+
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					System.out.println("\nID.............: " + resultSet.getObject("id_aluno"));
