@@ -1,8 +1,10 @@
 package repositories;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 import entities.Aluno;
+import exceptions.RepositoryException;
 import factories.ConnectionFactory;
 
 public class AlunoRepository {
@@ -39,7 +41,7 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-			System.out.println("\nAluno alterado com sucesso!");
+			
 		} catch (Exception e) {
 			System.out.println("\nErro ao alterar aluno: " + e.getMessage());
 		}
@@ -82,26 +84,29 @@ public class AlunoRepository {
 		}
 	}
 
-	public void consultarPorId(UUID id) {
-		try {
-			var connection = connectionFactory.obterConexao();
-			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno where id_aluno=?");
+	public Aluno consultarPorId(UUID id) {
+
+		try (var connection = connectionFactory.obterConexao()) {
+			var statement = connection
+					.prepareStatement("select id_aluno, nome, matricula, cpf from aluno where id_aluno=?");
 			statement.setObject(1, id);
 			var resultSet = statement.executeQuery();
 
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					System.out.println("\nID.............: " + resultSet.getObject("id_aluno"));
-					System.out.println("NOME...........: " + resultSet.getString("nome"));
-					System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
-					System.out.println("CPF.....: " + resultSet.getString("cpf"));
-				}
+			if (resultSet.next()) {
+				var aluno = new Aluno();
+				aluno.setId((UUID) resultSet.getObject("id_aluno"));
+				aluno.setNome(resultSet.getString("nome"));
+				aluno.setMatricula(resultSet.getString("matricula"));
+				aluno.setCpf(resultSet.getString("cpf"));
+				return aluno;
+			} else {
+				throw new RepositoryException("Nenhum aluno encontrado com o ID fornecido.");
 			}
 
-			connection.close();
-
-		} catch (Exception e) {
-			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
+		} catch (RepositoryException e) {
+			throw new RepositoryException("Erro ao consultar aluno: " + e.getMessage());
+		} catch (SQLException e) {
+			throw new RepositoryException("\nErro ao consultar aluno: " + e.getMessage());
 		}
 	}
 }
