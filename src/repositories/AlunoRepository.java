@@ -40,7 +40,7 @@ public class AlunoRepository {
 			statement.execute();
 
 		} catch (SQLException e) {
-			System.out.println("\nErro ao alterar aluno: " + e.getMessage());
+			throw new RepositoryException("\nErro ao consultar alunos: " + e.getMessage());
 		}
 	}
 
