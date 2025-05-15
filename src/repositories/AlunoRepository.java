@@ -70,10 +70,10 @@ public class AlunoRepository {
 
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					System.out.println("\nID.............: " + resultSet.getObject("id_aluno"));
-					System.out.println("NOME...........: " + resultSet.getString("nome"));
+					System.out.println("\nID.................: " + resultSet.getObject("id_aluno"));
+					System.out.println("NOME...............: " + resultSet.getString("nome"));
 					System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
-					System.out.println("CPF.....: " + resultSet.getString("cpf"));
+					System.out.println("CPF................: " + resultSet.getString("cpf"));
 				}
 			}
 
