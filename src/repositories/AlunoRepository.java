@@ -68,18 +68,20 @@ public class AlunoRepository {
 			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
 			var resultSet = statement.executeQuery();
 
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					System.out.println("\nID.................: " + resultSet.getObject("id_aluno"));
-					System.out.println("NOME...............: " + resultSet.getString("nome"));
-					System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
-					System.out.println("CPF................: " + resultSet.getString("cpf"));
-				}
+			if (!resultSet.next()) {
+				throw new RepositoryException("\nNenhum aluno encontrado.");
+			}
+
+			while (resultSet.next()) {
+				System.out.println("\nID.................: " + resultSet.getObject("id_aluno"));
+				System.out.println("NOME...............: " + resultSet.getString("nome"));
+				System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
+				System.out.println("CPF................: " + resultSet.getString("cpf"));
 			}
 
 			connection.close();
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
 		}
 	}
