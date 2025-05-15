@@ -61,8 +61,18 @@ public class AlunoController {
 	}
 
 	private void alterarAluno() {
-		// TODO Auto-generated method stub
+		System.out.print("Digite o ID do aluno a ser alterado: ");
+		var id = scanner.nextLine();
+		var aluno = alunoRepository.consultarPorId(UUID.fromString(id));
+		System.out.println("Aluno encontrado:\n " + aluno);
 
+		aluno.setId(UUID.fromString(id));
+		System.out.print("Digite o novo nome do aluno: ");
+		aluno.setNome(scanner.nextLine());
+		System.out.print("Digite a nova matrícula do aluno: ");
+		aluno.setMatricula(scanner.nextLine());
+		alunoRepository.alterar(aluno);
+		System.out.println("\nAluno alterado com sucesso!");
 	}
 
 	private void cadastrarAluno() {
