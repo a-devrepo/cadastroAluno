@@ -61,6 +61,7 @@ public class AlunoController {
 		System.out.print("Digite o ID do aluno a ser excluído: ");
 		var id = scanner.nextLine();
 		alunoRepository.excluir(UUID.fromString(id));
+		System.out.println("Aluno excluído com sucesso!");
 	}
 
 	private void listarAlunos() {
