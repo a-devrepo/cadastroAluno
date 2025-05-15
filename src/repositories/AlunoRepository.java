@@ -41,7 +41,7 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-			
+
 		} catch (Exception e) {
 			System.out.println("\nErro ao alterar aluno: " + e.getMessage());
 		}
@@ -56,7 +56,7 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-			
+
 		} catch (Exception e) {
 			System.out.println("\nErro ao excluir aluno: " + e.getMessage());
 		}
@@ -78,7 +78,7 @@ public class AlunoRepository {
 			}
 
 			connection.close();
-			
+
 		} catch (Exception e) {
 			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
 		}
@@ -92,16 +92,16 @@ public class AlunoRepository {
 			statement.setObject(1, id);
 			var resultSet = statement.executeQuery();
 
-			if (resultSet.next()) {
-				var aluno = new Aluno();
-				aluno.setId((UUID) resultSet.getObject("id_aluno"));
-				aluno.setNome(resultSet.getString("nome"));
-				aluno.setMatricula(resultSet.getString("matricula"));
-				aluno.setCpf(resultSet.getString("cpf"));
-				return aluno;
-			} else {
+			if (!resultSet.next()) {
 				throw new RepositoryException("Nenhum aluno encontrado com o ID fornecido.");
 			}
+
+			var aluno = new Aluno();
+			aluno.setId((UUID) resultSet.getObject("id_aluno"));
+			aluno.setNome(resultSet.getString("nome"));
+			aluno.setMatricula(resultSet.getString("matricula"));
+			aluno.setCpf(resultSet.getString("cpf"));
+			return aluno;
 
 		} catch (RepositoryException e) {
 			throw new RepositoryException("Erro ao consultar aluno: " + e.getMessage());
