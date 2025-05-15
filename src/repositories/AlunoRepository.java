@@ -57,7 +57,7 @@ public class AlunoRepository {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("\nErro ao excluir aluno: " + e.getMessage());
+			throw new RepositoryException("\nErro ao consultar alunos: " + e.getMessage());
 		}
 	}
 
