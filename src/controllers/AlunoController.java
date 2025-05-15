@@ -65,6 +65,7 @@ public class AlunoController {
 
 	private void listarAlunos() {
 		alunoRepository.consultar();
+		System.out.println("Consulta realizada com sucesso!");
 
 	}
 
