@@ -23,7 +23,7 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			System.out.println("\nErro ao inserir aluno: " + e.getMessage());
 		}
 	}
