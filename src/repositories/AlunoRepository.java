@@ -56,7 +56,7 @@ public class AlunoRepository {
 			statement.execute();
 
 			connection.close();
-			System.out.println("\nAluno excluído com sucesso!");
+			
 		} catch (Exception e) {
 			System.out.println("\nErro ao excluir aluno: " + e.getMessage());
 		}
