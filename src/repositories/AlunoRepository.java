@@ -1,5 +1,6 @@
 package repositories;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
@@ -12,8 +13,8 @@ public class AlunoRepository {
 	ConnectionFactory connectionFactory = new ConnectionFactory();
 
 	public void inserir(Aluno aluno) {
-		try {
-			var connection = connectionFactory.obterConexao();
+		try (var connection = connectionFactory.obterConexao()) {
+
 			var statement = connection
 					.prepareStatement("insert into aluno (id_aluno, nome, matricula, cpf) values(?,?,?,?)");
 			statement.setObject(1, aluno.getId());
@@ -22,16 +23,14 @@ public class AlunoRepository {
 			statement.setString(4, aluno.getCpf());
 			statement.execute();
 
-			connection.close();
 		} catch (SQLException e) {
 			System.out.println("\nErro ao inserir aluno: " + e.getMessage());
 		}
 	}
 
 	public void alterar(Aluno aluno) {
-		try {
+		try (var connection = connectionFactory.obterConexao()) {
 
-			var connection = connectionFactory.obterConexao();
 			var statement = connection.prepareStatement("update aluno set nome=?, matricula=?, cpf=? where id_aluno=?");
 
 			statement.setString(1, aluno.getNome());
@@ -40,16 +39,14 @@ public class AlunoRepository {
 			statement.setObject(4, aluno.getId());
 			statement.execute();
 
-			connection.close();
-
 		} catch (SQLException e) {
 			System.out.println("\nErro ao alterar aluno: " + e.getMessage());
 		}
 	}
 
 	public void excluir(UUID id) {
-		try {
-			var connection = connectionFactory.obterConexao();
+		try (var connection = connectionFactory.obterConexao()) {
+
 			var statement = connection.prepareStatement("delete from aluno where id_aluno=?");
 
 			statement.setObject(1, id);
@@ -59,16 +56,14 @@ public class AlunoRepository {
 				throw new RepositoryException("\nNenhum aluno encontrado com o ID fornecido.");
 			}
 
-			connection.close();
-
 		} catch (SQLException e) {
 			System.out.println("\nErro ao excluir aluno: " + e.getMessage());
 		}
 	}
 
 	public void consultar() {
-		try {
-			var connection = connectionFactory.obterConexao();
+		try (var connection = connectionFactory.obterConexao()) {
+
 			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
 			var resultSet = statement.executeQuery();
 
@@ -76,17 +71,15 @@ public class AlunoRepository {
 				throw new RepositoryException("\nNenhum aluno encontrado.");
 			}
 
-			while (resultSet.next()) {
+			do {
 				System.out.println("\nID.................: " + resultSet.getObject("id_aluno"));
 				System.out.println("NOME...............: " + resultSet.getString("nome"));
 				System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
 				System.out.println("CPF................: " + resultSet.getString("cpf"));
-			}
-
-			connection.close();
+			} while (resultSet.next());
 
 		} catch (SQLException e) {
-			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
+			throw new RepositoryException("\nErro ao consultar alunos: " + e.getMessage());
 		}
 	}
 
@@ -109,8 +102,6 @@ public class AlunoRepository {
 			aluno.setCpf(resultSet.getString("cpf"));
 			return aluno;
 
-		} catch (RepositoryException e) {
-			throw new RepositoryException("Erro ao consultar aluno: " + e.getMessage());
 		} catch (SQLException e) {
 			throw new RepositoryException("\nErro ao consultar aluno: " + e.getMessage());
 		}
