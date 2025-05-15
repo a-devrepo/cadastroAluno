@@ -78,7 +78,7 @@ public class AlunoRepository {
 			}
 
 			connection.close();
-			System.out.println("\nConsulta realizada com sucesso!");
+			
 		} catch (Exception e) {
 			System.out.println("\nErro ao consultar aluno: " + e.getMessage());
 		}
