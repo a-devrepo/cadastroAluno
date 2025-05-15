@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import entities.Aluno;
+import exceptions.RepositoryException;
 import repositories.AlunoRepository;
 
 public class AlunoController {
@@ -15,40 +16,47 @@ public class AlunoController {
 		var executando = true;
 
 		while (executando) {
+			try {
+			
+				System.out.println("\n=== MENU PRINCIPAL ===");
+				System.out.println("1. INSERIR");
+				System.out.println("2. ALTERAR");
+				System.out.println("3. LISTAR");
+				System.out.println("4. EXCLUIR");
+				System.out.println("5. SAIR");
+				System.out.print("Escolha uma opção (1-5): ");
 
-			System.out.println("\n=== MENU PRINCIPAL ===");
-			System.out.println("1. INSERIR");
-			System.out.println("2. ALTERAR");
-			System.out.println("3. LISTAR");
-			System.out.println("4. EXCLUIR");
-			System.out.println("5. SAIR");
-			System.out.print("Escolha uma opção (1-5): ");
+				var opcao = scanner.nextLine();
 
-			var opcao = scanner.nextLine();
-
-			switch (opcao) {
-			case "1":
-				cadastrarAluno();
-				break;
-			case "2":
-				alterarAluno();
-				break;
-			case "3":
-				listarAlunos();
-				break;
-			case "4":
-				excluirAluno();
-				break;
-			case "5":
-				System.out.println("Saindo do programa...");
-				executando = false;
-				break;
-			default:
-				System.out.println("Opção inválida! Tente novamente.");
+				switch (opcao) {
+				case "1":
+					cadastrarAluno();
+					break;
+				case "2":
+					alterarAluno();
+					break;
+				case "3":
+					listarAlunos();
+					break;
+				case "4":
+					excluirAluno();
+					break;
+				case "5":
+					System.out.println("Saindo do programa...");
+					executando = false;
+					break;
+				default:
+					System.out.println("Opção inválida! Tente novamente.");
+				}
+				
+			} catch (RepositoryException e) {
+				System.out.println(e.getMessage());
+			} catch (Exception e) {
+				System.out.println("Erro inesperado: " + e.getMessage());
 			}
 		}
 	}
-
+ 
 	private void excluirAluno() {
 		System.out.print("Digite o ID do aluno a ser excluído: ");
 		var id = scanner.nextLine();
