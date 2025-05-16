@@ -3,12 +3,12 @@ package controllers;
 import java.util.Scanner;
 import java.util.UUID;
 
+import controllers.validators.AlunoValidator;
+import controllers.views.ConsoleOutput;
 import entities.Aluno;
 import exceptions.DadosInvalidosException;
 import exceptions.RepositoryException;
 import services.AlunoService;
-import validators.AlunoValidator;
-import views.ConsoleOutput;
 
 public class AlunoController {
 

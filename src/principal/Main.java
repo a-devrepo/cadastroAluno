@@ -1,9 +1,9 @@
 package principal;
 
 import controllers.AlunoController;
+import controllers.views.ConsoleOutput;
 import repositories.AlunoRepository;
 import services.AlunoService;
-import views.ConsoleOutput;
 
 public class Main {
 

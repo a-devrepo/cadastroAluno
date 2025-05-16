@@ -1,4 +1,4 @@
-package views;
+package controllers.views;
 
 public class ConsoleOutput {
 

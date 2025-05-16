@@ -1,4 +1,4 @@
-package validators;
+package controllers.validators;
 
 import java.util.UUID;
 
