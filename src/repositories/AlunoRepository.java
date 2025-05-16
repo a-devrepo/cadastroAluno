@@ -2,7 +2,6 @@ package repositories;
 
 import java.sql.SQLException;
 import java.util.UUID;
-
 import entities.Aluno;
 import exceptions.RepositoryException;
 import factories.ConnectionFactory;
