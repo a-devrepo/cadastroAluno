@@ -8,7 +8,11 @@ import factories.ConnectionFactory;
 
 public class AlunoRepository {
 
-	ConnectionFactory connectionFactory = new ConnectionFactory();
+	private final ConnectionFactory connectionFactory;
+	
+	public AlunoRepository(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
+	}
 
 	public void inserir(Aluno aluno) {
 		try (var connection = connectionFactory.obterConexao()) {
