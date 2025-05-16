@@ -3,15 +3,15 @@ package entities;
 import java.util.UUID;
 
 public class Aluno {
-	
+
 	private UUID id;
 	private String nome;
 	private String matricula;
 	private String cpf;
-	
+
 	public Aluno() {
 	}
-	
+
 	public Aluno(UUID id, String nome, String matricula, String cpf) {
 		this.id = id;
 		this.nome = nome;
@@ -53,6 +53,9 @@ public class Aluno {
 
 	@Override
 	public String toString() {
-		return "Aluno [id=" + id + ", nome=" + nome + ", matricula=" + matricula + ", cpf=" + cpf + "]";
+		return "\nID.................:" + id + 
+				"\nNome...............:" + nome + 
+				"\nMatrícula..........:" + matricula+
+				"\nCPF................:" + cpf;
 	}
 }
