@@ -4,9 +4,10 @@ import java.util.Scanner;
 import java.util.UUID;
 
 import entities.Aluno;
+import exceptions.DadosInvalidosException;
 import exceptions.RepositoryException;
-import repositories.AlunoRepository;
 import services.AlunoService;
+import validators.AlunoValidator;
 import views.ConsoleOutput;
 
 public class AlunoController {
@@ -58,8 +59,8 @@ public class AlunoController {
 
 			} catch (RepositoryException e) {
 				consoleOutput.exibir(e.getMessage());
-			} catch (Exception e) {
-				consoleOutput.exibir("Erro inesperado: " + e.getMessage());
+			} catch (DadosInvalidosException e) {
+				consoleOutput.exibir(e.getMessage());
 			}
 		}
 	}
@@ -67,6 +68,7 @@ public class AlunoController {
 	private void excluirAluno() {
 		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser excluído: ");
 		var id = scanner.nextLine();
+		AlunoValidator.validarId(id);
 		alunoService.excluir(UUID.fromString(id));
 		consoleOutput.exibir("Aluno excluído com sucesso!");
 	}
@@ -79,13 +81,20 @@ public class AlunoController {
 	private void alterarAluno() {
 		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser alterado: ");
 		var id = scanner.nextLine();
+		AlunoValidator.validarId(id);
 		var aluno = alunoService.buscarPorId(UUID.fromString(id));
 		consoleOutput.exibir("Aluno encontrado:\n " + aluno);
 
 		consoleOutput.exibirTextoParaEntrada("Digite o novo nome do aluno: ");
-		aluno.setNome(scanner.nextLine());
+		var nome = scanner.nextLine();
+		AlunoValidator.validarNome(nome);
+		aluno.setNome(nome);
+		
 		consoleOutput.exibirTextoParaEntrada("Digite a nova matrícula do aluno: ");
-		aluno.setMatricula(scanner.nextLine());
+		var matricula = scanner.nextLine();
+		AlunoValidator.validarMatricula(matricula);
+		aluno.setMatricula(matricula);
+		
 		alunoService.alterar(aluno);
 		consoleOutput.exibir("\nAluno alterado com sucesso!");
 	}
@@ -94,11 +103,20 @@ public class AlunoController {
 
 		var aluno = new Aluno();
 		consoleOutput.exibirTextoParaEntrada("Digite o nome do aluno: ");
-		aluno.setNome(scanner.nextLine());
+		var nome = scanner.nextLine();
+		AlunoValidator.validarNome(nome);
+		aluno.setNome(nome);
+		
 		consoleOutput.exibirTextoParaEntrada("Digite a matrícula do aluno: ");
-		aluno.setMatricula(scanner.nextLine());
+		var matricula = scanner.nextLine();
+		AlunoValidator.validarMatricula(matricula);
+		aluno.setMatricula(matricula);
+		
 		consoleOutput.exibirTextoParaEntrada("Digite o CPF do aluno: ");
-		aluno.setCpf(scanner.nextLine());
+		var cpf = scanner.nextLine();
+		AlunoValidator.validarCpf(cpf);
+		aluno.setCpf(cpf);
+		
 		alunoService.inserir(aluno);
 		consoleOutput.exibir("\nAluno inserido com sucesso!");
 	}
