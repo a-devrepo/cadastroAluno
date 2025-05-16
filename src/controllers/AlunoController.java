@@ -27,7 +27,7 @@ public class AlunoController {
 		while (executando) {
 			try {
 
-				consoleOutput.exibir("1. INSERIR");
+				consoleOutput.exibirComQuebraLinha("1. INSERIR");
 				consoleOutput.exibir("2. ALTERAR");
 				consoleOutput.exibir("3. LISTAR");
 				consoleOutput.exibir("4. EXCLUIR");
@@ -70,12 +70,12 @@ public class AlunoController {
 		var id = scanner.nextLine();
 		AlunoValidator.validarId(id);
 		alunoService.excluir(UUID.fromString(id));
-		consoleOutput.exibir("Aluno excluído com sucesso!");
+		consoleOutput.exibirComQuebraLinha("Aluno excluído com sucesso!");
 	}
 
 	private void listarAlunos() {
 		alunoService.consultar();
-		consoleOutput.exibir("Consulta realizada com sucesso!");
+		consoleOutput.exibirComQuebraLinha("Consulta realizada com sucesso!");
 	}
 
 	private void alterarAluno() {
@@ -89,14 +89,14 @@ public class AlunoController {
 		var nome = scanner.nextLine();
 		AlunoValidator.validarNome(nome);
 		aluno.setNome(nome);
-		
+
 		consoleOutput.exibirTextoParaEntrada("Digite a nova matrícula do aluno: ");
 		var matricula = scanner.nextLine();
 		AlunoValidator.validarMatricula(matricula);
 		aluno.setMatricula(matricula);
-		
+
 		alunoService.alterar(aluno);
-		consoleOutput.exibir("\nAluno alterado com sucesso!");
+		consoleOutput.exibirComQuebraLinha("Aluno alterado com sucesso!");
 	}
 
 	private void cadastrarAluno() {
@@ -106,18 +106,18 @@ public class AlunoController {
 		var nome = scanner.nextLine();
 		AlunoValidator.validarNome(nome);
 		aluno.setNome(nome);
-		
+
 		consoleOutput.exibirTextoParaEntrada("Digite a matrícula do aluno: ");
 		var matricula = scanner.nextLine();
 		AlunoValidator.validarMatricula(matricula);
 		aluno.setMatricula(matricula);
-		
+
 		consoleOutput.exibirTextoParaEntrada("Digite o CPF do aluno: ");
 		var cpf = scanner.nextLine();
 		AlunoValidator.validarCpf(cpf);
 		aluno.setCpf(cpf);
-		
+
 		alunoService.inserir(aluno);
-		consoleOutput.exibir("\nAluno inserido com sucesso!");
+		consoleOutput.exibirComQuebraLinha("Aluno inserido com sucesso!");
 	}
 }
