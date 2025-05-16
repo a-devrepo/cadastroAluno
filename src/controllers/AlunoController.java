@@ -6,25 +6,32 @@ import java.util.UUID;
 import entities.Aluno;
 import exceptions.RepositoryException;
 import repositories.AlunoRepository;
+import services.AlunoService;
+import views.ConsoleOutput;
 
 public class AlunoController {
 
-	AlunoRepository alunoRepository = new AlunoRepository();
-	Scanner scanner = new Scanner(System.in);
+	private final AlunoService alunoService;
+	private final ConsoleOutput consoleOutput;
+	private final Scanner scanner = new Scanner(System.in);
+
+	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput) {
+		this.alunoService = alunoService;
+		this.consoleOutput = consoleOutput;
+	}
 
 	public void exibirOpcoes() {
 		var executando = true;
 
 		while (executando) {
 			try {
-			
-				System.out.println("\n=== MENU PRINCIPAL ===");
-				System.out.println("1. INSERIR");
-				System.out.println("2. ALTERAR");
-				System.out.println("3. LISTAR");
-				System.out.println("4. EXCLUIR");
-				System.out.println("5. SAIR");
-				System.out.print("Escolha uma opção (1-5): ");
+
+				consoleOutput.exibir("1. INSERIR");
+				consoleOutput.exibir("2. ALTERAR");
+				consoleOutput.exibir("3. LISTAR");
+				consoleOutput.exibir("4. EXCLUIR");
+				consoleOutput.exibir("5. SAIR");
+				consoleOutput.exibirTextoParaEntrada("Escolha uma opção (1-5):");
 
 				var opcao = scanner.nextLine();
 
@@ -48,54 +55,51 @@ public class AlunoController {
 				default:
 					System.out.println("Opção inválida! Tente novamente.");
 				}
-				
+
 			} catch (RepositoryException e) {
-				System.out.println(e.getMessage());
+				consoleOutput.exibir(e.getMessage());
 			} catch (Exception e) {
-				System.out.println("Erro inesperado: " + e.getMessage());
+				consoleOutput.exibir("Erro inesperado: " + e.getMessage());
 			}
 		}
 	}
- 
+
 	private void excluirAluno() {
-		System.out.print("Digite o ID do aluno a ser excluído: ");
+		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser excluído: ");
 		var id = scanner.nextLine();
-		alunoRepository.excluir(UUID.fromString(id));
-		System.out.println("Aluno excluído com sucesso!");
+		alunoService.excluir(UUID.fromString(id));
+		consoleOutput.exibir("Aluno excluído com sucesso!");
 	}
 
 	private void listarAlunos() {
-		alunoRepository.consultar();
-		System.out.println("Consulta realizada com sucesso!");
-
+		alunoService.consultar();
+		consoleOutput.exibir("Consulta realizada com sucesso!");
 	}
 
 	private void alterarAluno() {
-		System.out.print("Digite o ID do aluno a ser alterado: ");
+		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser alterado: ");
 		var id = scanner.nextLine();
-		var aluno = alunoRepository.consultarPorId(UUID.fromString(id));
-		System.out.println("Aluno encontrado:\n " + aluno);
+		var aluno = alunoService.buscarPorId(UUID.fromString(id));
+		consoleOutput.exibir("Aluno encontrado:\n " + aluno);
 
-		aluno.setId(UUID.fromString(id));
-		System.out.print("Digite o novo nome do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Digite o novo nome do aluno: ");
 		aluno.setNome(scanner.nextLine());
-		System.out.print("Digite a nova matrícula do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Digite a nova matrícula do aluno: ");
 		aluno.setMatricula(scanner.nextLine());
-		alunoRepository.alterar(aluno);
-		System.out.println("\nAluno alterado com sucesso!");
+		alunoService.alterar(aluno);
+		consoleOutput.exibir("\nAluno alterado com sucesso!");
 	}
 
 	private void cadastrarAluno() {
 
 		var aluno = new Aluno();
-		System.out.print("Digite o nome do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Digite o nome do aluno: ");
 		aluno.setNome(scanner.nextLine());
-		System.out.print("Digite a matrícula do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Digite a matrícula do aluno: ");
 		aluno.setMatricula(scanner.nextLine());
-		System.out.print("Digite o CPF do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Digite o CPF do aluno: ");
 		aluno.setCpf(scanner.nextLine());
-		aluno.setId(UUID.randomUUID());
-		alunoRepository.inserir(aluno);
-		System.out.println("\nAluno inserido com sucesso!");
+		alunoService.inserir(aluno);
+		consoleOutput.exibir("\nAluno inserido com sucesso!");
 	}
 }
