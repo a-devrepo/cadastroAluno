@@ -48,7 +48,7 @@ public class AlunoRepository {
 			var statement = connection.prepareStatement("delete from aluno where id_aluno=?");
 
 			statement.setObject(1, id);
-			var alunoExcluido = statement.execute();
+			var alunoExcluido = statement.executeUpdate() > 0;
 
 			if (!alunoExcluido) {
 				throw new RepositoryException("\nNenhum aluno encontrado com o ID fornecido.");
