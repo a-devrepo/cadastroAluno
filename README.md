@@ -23,6 +23,6 @@ Este é um projeto simples de cadastro de alunos implementado com **Java 17**, u
 - **`validators`**: Validação de regras de negócio e integridade de dados.
 - **`views`**: Responsável por exibir informações ao usuário (neste caso, via console).
 - **`repositories`**: Acesso direto ao banco de dados com comandos SQL (CRUD).
-- **`factories`**: Contém a classe `ConnectionFactory`, que fornece conexões com o banco PostgreSQL.
+- **`factories`**: Contém a interface `ConnectionFactory`, que fornece conexões com o banco PostgreSQL.
 - **`exceptions`**: Exceções customizadas para tratar erros específicos de negócio ou de persistência.
 - **`scripts`**: Scripts SQL para criação da tabela `aluno`.
