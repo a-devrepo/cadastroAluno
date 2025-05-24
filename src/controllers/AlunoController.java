@@ -14,11 +14,13 @@ public class AlunoController {
 
 	private final AlunoService alunoService;
 	private final ConsoleOutput consoleOutput;
+	private final AlunoValidator alunoValidator;
 	private final Scanner scanner = new Scanner(System.in);
 
-	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput) {
+	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput, AlunoValidator alunoValidator) {
 		this.alunoService = alunoService;
 		this.consoleOutput = consoleOutput;
+		this.alunoValidator = alunoValidator;
 	}
 
 	public void exibirOpcoes() {
@@ -68,7 +70,7 @@ public class AlunoController {
 	private void excluirAluno() {
 		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser excluído: ");
 		var id = scanner.nextLine();
-		AlunoValidator.validarId(id);
+		alunoValidator.validarId(id);
 		alunoService.excluir(UUID.fromString(id));
 		consoleOutput.exibirComQuebraLinha("Aluno excluído com sucesso!");
 	}
@@ -81,18 +83,18 @@ public class AlunoController {
 	private void alterarAluno() {
 		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser alterado: ");
 		var id = scanner.nextLine();
-		AlunoValidator.validarId(id);
+		alunoValidator.validarId(id);
 		var aluno = alunoService.buscarPorId(UUID.fromString(id));
 		consoleOutput.exibir("Aluno encontrado:\n " + aluno);
 
 		consoleOutput.exibirTextoParaEntrada("Digite o novo nome do aluno: ");
 		var nome = scanner.nextLine();
-		AlunoValidator.validarNome(nome);
+		alunoValidator.validarNome(nome);
 		aluno.setNome(nome);
 
 		consoleOutput.exibirTextoParaEntrada("Digite a nova matrícula do aluno: ");
 		var matricula = scanner.nextLine();
-		AlunoValidator.validarMatricula(matricula);
+		alunoValidator.validarMatricula(matricula);
 		aluno.setMatricula(matricula);
 
 		alunoService.alterar(aluno);
@@ -104,17 +106,17 @@ public class AlunoController {
 		var aluno = new Aluno();
 		consoleOutput.exibirTextoParaEntrada("Digite o nome do aluno: ");
 		var nome = scanner.nextLine();
-		AlunoValidator.validarNome(nome);
+		alunoValidator.validarNome(nome);
 		aluno.setNome(nome);
 
 		consoleOutput.exibirTextoParaEntrada("Digite a matrícula do aluno: ");
 		var matricula = scanner.nextLine();
-		AlunoValidator.validarMatricula(matricula);
+		alunoValidator.validarMatricula(matricula);
 		aluno.setMatricula(matricula);
 
 		consoleOutput.exibirTextoParaEntrada("Digite o CPF do aluno: ");
 		var cpf = scanner.nextLine();
-		AlunoValidator.validarCpf(cpf);
+		alunoValidator.validarCpf(cpf);
 		aluno.setCpf(cpf);
 
 		alunoService.inserir(aluno);
