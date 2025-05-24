@@ -9,14 +9,14 @@ import factories.DataBaseConnection;
 
 public class AlunoRepository {
 
-	private final DataBaseConnection connectionFactory;
+	private final DataBaseConnection dataBaseConnection;
 	
-	public AlunoRepository(DataBaseConnection connectionFactory) {
-		this.connectionFactory = connectionFactory;
+	public AlunoRepository(DataBaseConnection dataBaseConnection) {
+		this.dataBaseConnection = dataBaseConnection;
 	}
 
 	public void inserir(Aluno aluno) {
-		try (var connection = connectionFactory.obterConexao()) {
+		try (var connection = dataBaseConnection.obterConexao()) {
 
 			var statement = connection
 					.prepareStatement("insert into aluno (id_aluno, nome, matricula, cpf) values(?,?,?,?)");
@@ -32,7 +32,7 @@ public class AlunoRepository {
 	}
 
 	public void alterar(Aluno aluno) {
-		try (var connection = connectionFactory.obterConexao()) {
+		try (var connection = dataBaseConnection.obterConexao()) {
 
 			var statement = connection.prepareStatement("update aluno set nome=?, matricula=?, cpf=? where id_aluno=?");
 
@@ -48,7 +48,7 @@ public class AlunoRepository {
 	}
 
 	public void excluir(UUID id) {
-		try (var connection = connectionFactory.obterConexao()) {
+		try (var connection = dataBaseConnection.obterConexao()) {
 
 			var statement = connection.prepareStatement("delete from aluno where id_aluno=?");
 
@@ -65,7 +65,7 @@ public class AlunoRepository {
 	}
 
 	public void consultar() {
-		try (var connection = connectionFactory.obterConexao()) {
+		try (var connection = dataBaseConnection.obterConexao()) {
 
 			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
 			var resultSet = statement.executeQuery();
@@ -88,7 +88,7 @@ public class AlunoRepository {
 
 	public Aluno consultarPorId(UUID id) {
 
-		try (var connection = connectionFactory.obterConexao()) {
+		try (var connection = dataBaseConnection.obterConexao()) {
 			var statement = connection
 					.prepareStatement("select id_aluno, nome, matricula, cpf from aluno where id_aluno=?");
 			statement.setObject(1, id);
