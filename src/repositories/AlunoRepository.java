@@ -5,12 +5,13 @@ import java.util.UUID;
 import entities.Aluno;
 import exceptions.RepositoryException;
 import factories.ConnectionFactory;
+import factories.DataBaseConnection;
 
 public class AlunoRepository {
 
-	private final ConnectionFactory connectionFactory;
+	private final DataBaseConnection connectionFactory;
 	
-	public AlunoRepository(ConnectionFactory connectionFactory) {
+	public AlunoRepository(DataBaseConnection connectionFactory) {
 		this.connectionFactory = connectionFactory;
 	}
 
