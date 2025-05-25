@@ -3,10 +3,10 @@ package controllers;
 import java.util.Scanner;
 import java.util.UUID;
 
-import controllers.validators.AlunoValidator;
+import controllers.validators.InputValidator;
+import controllers.views.ConsoleInput;
 import controllers.views.ConsoleOutput;
-import entities.Aluno;
-import exceptions.DadosInvalidosException;
+import exceptions.DadosEntradaException;
 import exceptions.RepositoryException;
 import services.AlunoService;
 
@@ -14,13 +14,16 @@ public class AlunoController {
 
 	private final AlunoService alunoService;
 	private final ConsoleOutput consoleOutput;
-	private final AlunoValidator alunoValidator;
+	private final InputValidator alunoValidator;
+	private final ConsoleInput consoleInput;
 	private final Scanner scanner = new Scanner(System.in);
 
-	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput, AlunoValidator alunoValidator) {
+	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput, 
+			InputValidator alunoValidator,ConsoleInput consoleInput) {
 		this.alunoService = alunoService;
 		this.consoleOutput = consoleOutput;
 		this.alunoValidator = alunoValidator;
+		this.consoleInput = consoleInput;
 	}
 
 	public void exibirOpcoes() {
@@ -61,7 +64,7 @@ public class AlunoController {
 
 			} catch (RepositoryException e) {
 				consoleOutput.exibir(e.getMessage());
-			} catch (DadosInvalidosException e) {
+			} catch (DadosEntradaException e) {
 				consoleOutput.exibir(e.getMessage());
 			}
 		}
@@ -102,23 +105,7 @@ public class AlunoController {
 	}
 
 	private void cadastrarAluno() {
-
-		var aluno = new Aluno();
-		consoleOutput.exibirTextoParaEntrada("Digite o nome do aluno: ");
-		var nome = scanner.nextLine();
-		alunoValidator.validarNome(nome);
-		aluno.setNome(nome);
-
-		consoleOutput.exibirTextoParaEntrada("Digite a matrícula do aluno: ");
-		var matricula = scanner.nextLine();
-		alunoValidator.validarMatricula(matricula);
-		aluno.setMatricula(matricula);
-
-		consoleOutput.exibirTextoParaEntrada("Digite o CPF do aluno: ");
-		var cpf = scanner.nextLine();
-		alunoValidator.validarCpf(cpf);
-		aluno.setCpf(cpf);
-
+		var aluno = consoleInput.montarAluno();
 		alunoService.inserir(aluno);
 		consoleOutput.exibirComQuebraLinha("Aluno inserido com sucesso!");
 	}
