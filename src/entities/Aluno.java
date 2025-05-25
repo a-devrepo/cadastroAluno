@@ -1,6 +1,10 @@
 package entities;
 
+import java.util.Objects;
 import java.util.UUID;
+
+import exceptions.DadosInvalidosException;
+import exceptions.DomainException;
 
 public class Aluno {
 
@@ -24,6 +28,9 @@ public class Aluno {
 	}
 
 	public void setId(UUID id) {
+		if(Objects.isNull(id)) {
+			throw new DomainException("Id não pode ser nulo");
+		}
 		this.id = id;
 	}
 
@@ -32,6 +39,9 @@ public class Aluno {
 	}
 
 	public void setNome(String nome) {
+		if (nome == null || nome.isBlank() || nome.length() < 3) {
+			throw new DadosInvalidosException("Nome inválido");
+		}
 		this.nome = nome;
 	}
 
@@ -40,6 +50,9 @@ public class Aluno {
 	}
 
 	public void setMatricula(String matricula) {
+		if (matricula == null || matricula.isBlank()) {
+			throw new DadosInvalidosException("Matrícula inválida");
+		}
 		this.matricula = matricula;
 	}
 
@@ -48,6 +61,12 @@ public class Aluno {
 	}
 
 	public void setCpf(String cpf) {
+		if (cpf == null || cpf.isBlank() || cpf.length() != 11) {
+			throw new DadosInvalidosException("CPF inválido");
+		}
+		if (!cpf.matches("\\d+")) {
+			throw new DadosInvalidosException("CPF deve conter apenas números");
+		}
 		this.cpf = cpf;
 	}
 
