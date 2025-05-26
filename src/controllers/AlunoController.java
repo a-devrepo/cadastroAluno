@@ -128,5 +128,6 @@ public class AlunoController {
 
 		var aluno = alunoFactory.criar(nome, cpf, matricula);
 		alunoService.inserir(aluno);
+		consoleOutput.exibirComQuebraLinha("Aluno cadastrado com sucesso!");
 	}
 }
