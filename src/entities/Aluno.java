@@ -3,7 +3,7 @@ package entities;
 import java.util.Objects;
 import java.util.UUID;
 
-import exceptions.DadosInvalidosException;
+import exceptions.DadosEntradaException;
 import exceptions.DomainException;
 
 public class Aluno {
@@ -40,7 +40,7 @@ public class Aluno {
 
 	public void setNome(String nome) {
 		if (nome == null || nome.isBlank() || nome.length() < 3) {
-			throw new DadosInvalidosException("Nome inválido");
+			throw new DadosEntradaException("Nome inválido");
 		}
 		this.nome = nome;
 	}
@@ -51,7 +51,7 @@ public class Aluno {
 
 	public void setMatricula(String matricula) {
 		if (matricula == null || matricula.isBlank()) {
-			throw new DadosInvalidosException("Matrícula inválida");
+			throw new DadosEntradaException("Matrícula inválida");
 		}
 		this.matricula = matricula;
 	}
@@ -62,10 +62,10 @@ public class Aluno {
 
 	public void setCpf(String cpf) {
 		if (cpf == null || cpf.isBlank() || cpf.length() != 11) {
-			throw new DadosInvalidosException("CPF inválido");
+			throw new DadosEntradaException("CPF inválido");
 		}
 		if (!cpf.matches("\\d+")) {
-			throw new DadosInvalidosException("CPF deve conter apenas números");
+			throw new DadosEntradaException("CPF deve conter apenas números");
 		}
 		this.cpf = cpf;
 	}
