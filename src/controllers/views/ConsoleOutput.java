@@ -1,5 +1,9 @@
 package controllers.views;
 
+import java.util.List;
+
+import entities.Aluno;
+
 public class ConsoleOutput {
 
 	public void exibir(String texto) {
@@ -12,5 +16,11 @@ public class ConsoleOutput {
 
 	public void exibirComQuebraLinha(String texto) {
 		System.out.println("\n" + texto);
+	}
+
+	public void exibirLista(List<Aluno> listaAlunos) {
+		for (Aluno aluno : listaAlunos) {
+			exibir(aluno.toString());
+		}
 	}
 }
