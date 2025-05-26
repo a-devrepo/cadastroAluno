@@ -14,7 +14,6 @@ public class AlunoService {
 	}
 
 	public void inserir(Aluno aluno) {
-		aluno.setId(UUID.randomUUID());
 		alunoRepository.inserir(aluno);
 	}
 
