@@ -87,7 +87,8 @@ public class AlunoController {
 	}
 
 	private void listarAlunos() {
-		alunoService.consultar();
+		var listaAlunos = alunoService.consultar();
+		consoleOutput.exibirLista(listaAlunos);
 		consoleOutput.exibirComQuebraLinha("Consulta realizada com sucesso!");
 	}
 
