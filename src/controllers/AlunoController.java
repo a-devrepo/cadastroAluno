@@ -6,24 +6,30 @@ import java.util.UUID;
 import controllers.validators.InputValidator;
 import controllers.views.ConsoleInput;
 import controllers.views.ConsoleOutput;
+import entities.Aluno;
 import exceptions.DadosEntradaException;
+import exceptions.DomainException;
 import exceptions.RepositoryException;
+import factories.AlunoFactory;
 import services.AlunoService;
 
 public class AlunoController {
 
 	private final AlunoService alunoService;
 	private final ConsoleOutput consoleOutput;
-	private final InputValidator alunoValidator;
+	private final InputValidator inputValidator;
 	private final ConsoleInput consoleInput;
-	private final Scanner scanner = new Scanner(System.in);
+	private final AlunoFactory alunoFactory;
+	private final Scanner scanner;
 
-	public AlunoController(AlunoService alunoService, ConsoleOutput consoleOutput, 
-			InputValidator alunoValidator,ConsoleInput consoleInput) {
+	public AlunoController(Scanner scanner,AlunoService alunoService, ConsoleOutput consoleOutput, InputValidator inputValidator,
+			ConsoleInput consoleInput, AlunoFactory alunoFactory) {
+		this.scanner = scanner;
 		this.alunoService = alunoService;
 		this.consoleOutput = consoleOutput;
-		this.alunoValidator = alunoValidator;
+		this.inputValidator = inputValidator;
 		this.consoleInput = consoleInput;
+		this.alunoFactory = alunoFactory;
 	}
 
 	public void exibirOpcoes() {
@@ -55,25 +61,27 @@ public class AlunoController {
 					excluirAluno();
 					break;
 				case "5":
-					System.out.println("Saindo do programa...");
+					consoleOutput.exibir("Saindo do programa...");
 					executando = false;
 					break;
 				default:
-					System.out.println("Opção inválida! Tente novamente.");
+					consoleOutput.exibir("Opção inválida! Tente novamente.");
 				}
 
 			} catch (RepositoryException e) {
-				consoleOutput.exibir(e.getMessage());
+				consoleOutput.exibirComQuebraLinha(e.getMessage());
 			} catch (DadosEntradaException e) {
-				consoleOutput.exibir(e.getMessage());
+				consoleOutput.exibirComQuebraLinha(e.getMessage());
+			} catch (DomainException e) {
+				consoleOutput.exibirComQuebraLinha(e.getMessage());
 			}
+
 		}
 	}
 
 	private void excluirAluno() {
-		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser excluído: ");
-		var id = scanner.nextLine();
-		alunoValidator.validarId(id);
+		var id = consoleInput.lerCampo("Digite o ID do aluno a ser excluído: ");
+		inputValidator.validarId(id);
 		alunoService.excluir(UUID.fromString(id));
 		consoleOutput.exibirComQuebraLinha("Aluno excluído com sucesso!");
 	}
@@ -86,27 +94,39 @@ public class AlunoController {
 	private void alterarAluno() {
 		consoleOutput.exibirTextoParaEntrada("Digite o ID do aluno a ser alterado: ");
 		var id = scanner.nextLine();
-		alunoValidator.validarId(id);
+		inputValidator.validarId(id);
 		var aluno = alunoService.buscarPorId(UUID.fromString(id));
 		consoleOutput.exibir("Aluno encontrado:\n " + aluno);
 
-		consoleOutput.exibirTextoParaEntrada("Digite o novo nome do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Novo nome (pressione Enter para manter o atual):");
 		var nome = scanner.nextLine();
-		alunoValidator.validarNome(nome);
-		aluno.setNome(nome);
+		if (!nome.isBlank()) {
+			inputValidator.validarNome(nome);
+			aluno.setNome(nome);
+		}
 
-		consoleOutput.exibirTextoParaEntrada("Digite a nova matrícula do aluno: ");
+		consoleOutput.exibirTextoParaEntrada("Nova matrícula (pressione Enter para manter a atual):");
 		var matricula = scanner.nextLine();
-		alunoValidator.validarMatricula(matricula);
-		aluno.setMatricula(matricula);
+		if (!matricula.isBlank()) {
+			inputValidator.validarMatricula(matricula);
+			aluno.setMatricula(matricula);
+		}
 
 		alunoService.alterar(aluno);
 		consoleOutput.exibirComQuebraLinha("Aluno alterado com sucesso!");
 	}
 
 	private void cadastrarAluno() {
-		var aluno = consoleInput.montarAluno();
+		var nome = consoleInput.lerCampo("Digite o nome do aluno: ");
+		inputValidator.validarNome(nome);
+
+		var cpf = consoleInput.lerCampo("Digite o CPF do aluno: ");
+		inputValidator.validarCpf(cpf);
+
+		var matricula = consoleInput.lerCampo("Digite a matrícula do aluno: ");
+		inputValidator.validarMatricula(matricula);
+
+		var aluno = alunoFactory.criar(nome, cpf, matricula);
 		alunoService.inserir(aluno);
-		consoleOutput.exibirComQuebraLinha("Aluno inserido com sucesso!");
 	}
 }
