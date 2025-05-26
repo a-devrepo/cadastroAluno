@@ -1,16 +1,18 @@
 package repositories;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+
 import entities.Aluno;
 import exceptions.RepositoryException;
-import factories.ConnectionFactory;
 import factories.DataBaseConnection;
 
 public class AlunoRepository {
 
 	private final DataBaseConnection dataBaseConnection;
-	
+
 	public AlunoRepository(DataBaseConnection dataBaseConnection) {
 		this.dataBaseConnection = dataBaseConnection;
 	}
@@ -64,7 +66,7 @@ public class AlunoRepository {
 		}
 	}
 
-	public void consultar() {
+	public List<Aluno> consultar() {
 		try (var connection = dataBaseConnection.obterConexao()) {
 
 			var statement = connection.prepareStatement("select id_aluno, nome, matricula, cpf from aluno");
@@ -74,12 +76,17 @@ public class AlunoRepository {
 				throw new RepositoryException("\nNenhum aluno encontrado.");
 			}
 
+			var listaAlunos = new ArrayList<Aluno>();
 			do {
-				System.out.println("\nID.................: " + resultSet.getObject("id_aluno"));
-				System.out.println("NOME...............: " + resultSet.getString("nome"));
-				System.out.println("MATRICULA..........: " + resultSet.getString("matricula"));
-				System.out.println("CPF................: " + resultSet.getString("cpf"));
+				var aluno = new Aluno();
+				aluno.setId((UUID) resultSet.getObject("id_aluno"));
+				aluno.setNome(resultSet.getString("nome"));
+				aluno.setMatricula(resultSet.getString("matricula"));
+				aluno.setCpf(resultSet.getString("cpf"));
+				listaAlunos.add(aluno);
 			} while (resultSet.next());
+
+			return listaAlunos;
 
 		} catch (SQLException e) {
 			throw new RepositoryException("\nErro ao consultar alunos: " + e.getMessage());
