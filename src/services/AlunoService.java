@@ -1,5 +1,6 @@
 package services;
 
+import java.util.List;
 import java.util.UUID;
 
 import entities.Aluno;
@@ -29,7 +30,7 @@ public class AlunoService {
 		return alunoRepository.consultarPorId(id);
 	}
 
-	public void consultar() {
-		alunoRepository.consultar();
+	public List<Aluno> consultar() {
+		return alunoRepository.consultar();
 	}
 }
