@@ -14,15 +14,24 @@ import services.AlunoService;
 public class Main {
 
 	public static void main(String[] args) {
-		var scanner = new Scanner(System.in);
-		var dataBaseConnection = new PostgreConnectionFactory().criarDatabaseConnection();
-		var alunoRepository = new AlunoRepository(dataBaseConnection);
-		var alunoService = new AlunoService(alunoRepository);
-		var consoleOutput = new ConsoleOutput();
-		var consoleInput = new ConsoleInput(scanner, consoleOutput);
-		var alunoValidator = new InputValidator();
-		var alunoFactory = new AlunoFactory();
-		var alunoController = new AlunoController(scanner,alunoService, consoleOutput,alunoValidator, consoleInput, alunoFactory);
-		alunoController.exibirOpcoes();
+		try (var scanner = new Scanner(System.in)) {
+            var connection = new PostgreConnectionFactory().criarDatabaseConnection();
+            var alunoRepository = new AlunoRepository(connection);
+            var alunoService = new AlunoService(alunoRepository);
+            var consoleOutput = new ConsoleOutput();
+            var consoleInput = new ConsoleInput(scanner, consoleOutput);
+            var alunoValidator = new InputValidator();
+            var alunoFactory = new AlunoFactory();
+
+            var alunoController = new AlunoController(
+                alunoService,
+                consoleOutput,
+                alunoValidator,
+                consoleInput,
+                alunoFactory
+            );
+
+            alunoController.exibirOpcoes();
+        }
 	}
 }

@@ -1,10 +1,8 @@
 package controllers.views;
 
 import java.util.Scanner;
-import java.util.UUID;
 
 import controllers.validators.InputValidator;
-import entities.Aluno;
 import exceptions.DadosEntradaException;
 
 public class ConsoleInput {
